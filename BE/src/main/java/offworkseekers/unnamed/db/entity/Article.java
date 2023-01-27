@@ -53,7 +53,7 @@ public class Article {
             String articleThumbnailUrl,
             LocalDate articleCreatedDate,
             int articleViewCount,
-            Film flim,
+            Film film,
             User user
     ){
         this.articleId = articleId;
@@ -62,7 +62,7 @@ public class Article {
         this.articleThumbnailUrl = articleThumbnailUrl;
         this.articleCreatedDate = articleCreatedDate;
         this.articleViewCount = articleViewCount;
-        this.film = flim;
+        this.film = film;
         this.user = user;
     }
 }
