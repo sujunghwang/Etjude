@@ -9,5 +9,5 @@ public interface StoryRepositorySupport {
 
     List<StoryListRecommendedByLikeResponse> getStoryListRecommendedByLike();
 
-    StoryDetailResponse getStroyDetail(Long storyId);
+    StoryDetailResponse getStoryDetail(Long storyId);
 }

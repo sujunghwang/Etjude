@@ -27,7 +27,7 @@ public class StoryService {
     }
 
     public StoryDetailResponse storyDetailResponse(Long storyId) {
-        StoryDetailResponse storyDetail = storyRepository.getStroyDetail(storyId);
+        StoryDetailResponse storyDetail = storyRepository.getStoryDetail(storyId);
         return storyDetail;
     }
 
@@ -35,5 +35,7 @@ public class StoryService {
         Optional<Story> story = storyRepository.findById(storyId);
         return story.get().getStoryDesc();
     }
+
+
 
 }

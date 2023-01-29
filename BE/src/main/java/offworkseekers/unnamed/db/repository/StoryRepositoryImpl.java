@@ -48,7 +48,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     }
 
     @Override
-    public StoryDetailResponse getStroyDetail(Long storyId) {
+    public StoryDetailResponse getStoryDetail(Long storyId) {
         Tuple tuple = queryFactory
                 .select(story.storyVideoUrl, category.categoryName, work.workTitle, story.storyTitle, story.storySummary, story.storyLike)
                 .from(story, work, category)
