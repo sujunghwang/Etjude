@@ -2,6 +2,7 @@ package offworkseekers.unnamed.api.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
 import offworkseekers.unnamed.api.response.StoryDetailResponse;
 import offworkseekers.unnamed.api.response.StoryListRecommendedByLikeResponse;
 import offworkseekers.unnamed.api.response.StoryRoleResponse;
@@ -56,6 +57,11 @@ public class StoryService {
         }
 
         return roleList;
+    }
+
+    public List<RoleWithLineOfSceneResponse> roleWithLineOfSceneResponseList(Long storyId) {
+        List<RoleWithLineOfSceneResponse> roleWithLines = roleRepository.getRoleWithLines(storyId);
+        return roleWithLines;
     }
 
 
