@@ -1,6 +1,7 @@
 package offworkseekers.unnamed.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
 import offworkseekers.unnamed.api.response.StoryDetailResponse;
 import offworkseekers.unnamed.api.response.StoryListRecommendedByLikeResponse;
 import offworkseekers.unnamed.api.response.StoryRoleResponse;
@@ -41,5 +42,9 @@ public class StoryController {
         return storyService.storyRoleList(storyId);
     }
 
+    @GetMapping(value = "/api/v1/story/detail/scripts")
+    public List<RoleWithLineOfSceneResponse> storyRoleWithScript(@RequestParam(value = "story_id") Long storyId) {
+        return storyService.roleWithLineOfSceneResponseList(storyId);
+    }
 
 }
