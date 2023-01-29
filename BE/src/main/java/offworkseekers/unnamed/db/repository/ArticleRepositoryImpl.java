@@ -29,14 +29,14 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
         List<ArticleWithFilmUrlResponse> result = queryFactory
                 .select(Projections.constructor(ArticleWithFilmUrlResponse.class,
                         article.articleId,
-                        film.filmId,
+                        article.film.filmId,
                         article.articleThumbnailUrl,
                         article.articleTitle,
                         article.user.nickName,
                         article.user.picture,
                         article.articleCreatedDate,
                         article.articleViewCount))
-                .from(article, film)
+                .from(article)
                 .fetch();
 
         return result;
