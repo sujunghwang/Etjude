@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
 import offworkseekers.unnamed.api.response.StoryDetailResponse;
-import offworkseekers.unnamed.api.response.StoryListRecommendedByLikeResponse;
+import offworkseekers.unnamed.api.response.StoryListResponse;
 import offworkseekers.unnamed.api.response.StoryRoleResponse;
 import offworkseekers.unnamed.db.entity.Role;
 import offworkseekers.unnamed.db.entity.Story;
@@ -27,8 +27,8 @@ public class StoryService {
 
     private final RoleRepository roleRepository;
 
-    public List<StoryListRecommendedByLikeResponse> storyListRecommendedByLike() {
-        List<StoryListRecommendedByLikeResponse> storyListRecommendedByLike = storyRepository.getStoryListRecommendedByLike();
+    public List<StoryListResponse> storyListRecommendedByLike() {
+        List<StoryListResponse> storyListRecommendedByLike = storyRepository.getStoryListRecommendedByLike();
         
         return storyListRecommendedByLike;
     }
@@ -64,6 +64,9 @@ public class StoryService {
         return roleWithLines;
     }
 
-
+    public List<StoryListResponse> storySearchList(String keyword, String categoryName) {
+        List<StoryListResponse> storySearchList = storyRepository.getStorySearchList(keyword, categoryName);
+        return storySearchList;
+    }
 
 }

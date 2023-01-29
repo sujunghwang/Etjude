@@ -4,7 +4,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.response.StoryDetailResponse;
-import offworkseekers.unnamed.api.response.StoryListRecommendedByLikeResponse;
+import offworkseekers.unnamed.api.response.StoryListResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<StoryListRecommendedByLikeResponse> getStoryListRecommendedByLike() {
+    public List<StoryListResponse> getStoryListRecommendedByLike() {
         List<Tuple> fetch = queryFactory
                 .select(story.storyId, story.storyThumbnailUrl, story.storyLike, story.storyTitle, category.categoryName, work.workTitle)
                 .from(story, category, work)
@@ -31,9 +31,10 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                 )
                 .fetch();
 
-        List<StoryListRecommendedByLikeResponse> storyListRecommendedByLikeRespons = new ArrayList<>();
+        List<StoryListResponse> storyListRecommendedByLikeResponse = new ArrayList<>();
+
         for (Tuple tuple : fetch) {
-            storyListRecommendedByLikeRespons.add(StoryListRecommendedByLikeResponse.builder()
+            storyListRecommendedByLikeResponse.add(StoryListResponse.builder()
                     .storyId(tuple.get(story.storyId))
                     .storyTitle(tuple.get(story.storyTitle))
                     .storyThumbnailUrl(tuple.get(story.storyThumbnailUrl))
@@ -44,7 +45,7 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
             );
         }
 
-        return storyListRecommendedByLikeRespons;
+        return storyListRecommendedByLikeResponse;
     }
 
     @Override
@@ -75,5 +76,35 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                 .build();
 
         return storyDetail;
+    }
+
+    @Override
+    public List<StoryListResponse> getStorySearchList(String keyword, String categoryName) {
+        List<Tuple> fetch = queryFactory
+                .select(story.storyId, story.storyThumbnailUrl, story.storyLike, story.storyTitle, category.categoryName, work.workTitle)
+                .from(story, category, work)
+                .where(
+                        story.category.categoryName.eq(categoryName),
+                        story.storyTitle.contains(keyword)
+                )
+                .groupBy(story.storyId)
+                .fetch();
+
+        List<StoryListResponse> storySearchResult = new ArrayList<>();
+
+        for (Tuple tuple : fetch) {
+            storySearchResult.add(
+                    StoryListResponse.builder()
+                    .storyId(tuple.get(story.storyId))
+                    .storyTitle(tuple.get(story.storyTitle))
+                    .storyThumbnailUrl(tuple.get(story.storyThumbnailUrl))
+                    .likeCount(tuple.get(story.storyLike))
+                    .categoryName(tuple.get(category.categoryName))
+                    .workTitle(tuple.get(work.workTitle))
+                    .build()
+            );
+        }
+        return storySearchResult;
+
     }
 }

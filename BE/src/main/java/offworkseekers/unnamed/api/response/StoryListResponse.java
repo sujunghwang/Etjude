@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Data
 @Getter
-public class StoryListRecommendedByLikeResponse {
+public class StoryListResponse {
     private Long storyId;
     private String StoryThumbnailUrl;
     private String CategoryName;
@@ -15,7 +15,7 @@ public class StoryListRecommendedByLikeResponse {
     private int likeCount;
 
     @Builder
-    public StoryListRecommendedByLikeResponse(Long storyId, String storyThumbnailUrl, String categoryName, String storyTitle, String workTitle, int likeCount) {
+    public StoryListResponse(Long storyId, String storyThumbnailUrl, String categoryName, String storyTitle, String workTitle, int likeCount) {
         this.storyId = storyId;
         StoryThumbnailUrl = storyThumbnailUrl;
         CategoryName = categoryName;
