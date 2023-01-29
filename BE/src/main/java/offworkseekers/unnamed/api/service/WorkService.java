@@ -1,23 +1,39 @@
 package offworkseekers.unnamed.api.service;
 
-import offworkseekers.unnamed.db.entity.Work;
-import offworkseekers.unnamed.db.entity.WorkSearch;
+import lombok.RequiredArgsConstructor;
+import offworkseekers.unnamed.api.response.GetWorkResponse;
+import offworkseekers.unnamed.api.response.StoriesOfWork;
+import offworkseekers.unnamed.api.response.WorkOrderByRandomResponse;
+import offworkseekers.unnamed.api.response.WorkSearchResponse;
 import offworkseekers.unnamed.db.repository.WorkRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class WorkService {
 
-    WorkRepository workRepository;
+    private final WorkRepository workRepository;
 
 
-    public List<Work> test(WorkSearch workSearch) {
+    public List<WorkOrderByRandomResponse> getWorkListRandom() {
 
-        Long workId = 1L;
-        workRepository.findByWorkId(workId);
+        List<WorkOrderByRandomResponse> works = workRepository.getWorkListRandom();
+        return works;
+    }
 
-        return null;
+    public List<WorkSearchResponse> getWorkSearchList(String keyword, Long categoryId){
+        return workRepository.getWorkSearchList(keyword, categoryId);
+    }
+
+    public GetWorkResponse getWork(Long workId){
+        return workRepository.getWork(workId);
+    }
+
+    public List<StoriesOfWork> getStoriesByWorkId(Long workId){
+        return workRepository.getStoriesByWorkId(workId);
     }
 }
