@@ -3,12 +3,10 @@ package offworkseekers.unnamed.api.controller;
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
 import offworkseekers.unnamed.api.response.StoryDetailResponse;
-import offworkseekers.unnamed.api.response.StoryListRecommendedByLikeResponse;
+import offworkseekers.unnamed.api.response.StoryListResponse;
 import offworkseekers.unnamed.api.response.StoryRoleResponse;
 import offworkseekers.unnamed.api.service.StoryService;
-import offworkseekers.unnamed.db.entity.Role;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +19,8 @@ public class StoryController {
     private final StoryService storyService;
 
     @GetMapping(value = "/api/v1/story/recommended/popular")
-    public List<StoryListRecommendedByLikeResponse> storyListByLike() {
-        List<StoryListRecommendedByLikeResponse> response = storyService.storyListRecommendedByLike();
+    public List<StoryListResponse> storyListByLike() {
+        List<StoryListResponse> response = storyService.storyListRecommendedByLike();
         return response;
     }
 
@@ -45,6 +43,11 @@ public class StoryController {
     @GetMapping(value = "/api/v1/story/detail/scripts")
     public List<RoleWithLineOfSceneResponse> storyRoleWithScript(@RequestParam(value = "story_id") Long storyId) {
         return storyService.roleWithLineOfSceneResponseList(storyId);
+    }
+
+    @GetMapping(value = "/api/v1/story/search")
+    public List<StoryListResponse> storySearchList(@RequestParam(value = "keyword") String keyword, @RequestParam(value = "category") String categoryName) {
+        return storyService.storySearchList(keyword, categoryName);
     }
 
 }
