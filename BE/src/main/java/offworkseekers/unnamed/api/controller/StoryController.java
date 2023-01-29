@@ -3,7 +3,9 @@ package offworkseekers.unnamed.api.controller;
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.response.StoryDetailResponse;
 import offworkseekers.unnamed.api.response.StoryListRecommendedByLikeResponse;
+import offworkseekers.unnamed.api.response.StoryRoleResponse;
 import offworkseekers.unnamed.api.service.StoryService;
+import offworkseekers.unnamed.db.entity.Role;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +34,11 @@ public class StoryController {
     @GetMapping(value = "/api/v1/story/detail/desc")
     public String storyDesc(@RequestParam(value = "story_id") Long storyId) {
         return storyService.storyDescResponse(storyId);
+    }
+
+    @GetMapping(value = "/api/v1/story/detail/roles")
+    public List<StoryRoleResponse> storyRoles(@RequestParam(value = "story_id") Long storyId) {
+        return storyService.storyRoleList(storyId);
     }
 
 
