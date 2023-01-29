@@ -33,6 +33,9 @@ public class Story {
     @Column(name = "story_thumbnail_url")
     private String storyThumbnailUrl;
 
+    @Column(name = "story_like")
+    private int storyLike;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "work_id")
     private Work work;
@@ -50,7 +53,7 @@ public class Story {
     @OneToMany(mappedBy = "story")
     private List<Studio> studios = new ArrayList<>();
     @Builder
-    public Story(Long storyId, String storyTitle, String storyVideoUrl, String storyDesc, String storySummary, String storyThumbnailUrl, Work work, Category category, List<Scene> scenes, List<Studio> studios) {
+    public Story(Long storyId, String storyTitle, String storyVideoUrl, String storyDesc, String storySummary, String storyThumbnailUrl, Work work, Category category, List<Scene> scenes, List<Studio> studios, int storyLike) {
         this.storyId = storyId;
         this.storyTitle = storyTitle;
         this.storyVideoUrl = storyVideoUrl;
@@ -61,6 +64,7 @@ public class Story {
         this.category = category;
         this.scenes = scenes;
         this.studios = studios;
+        this.storyLike = storyLike;
     }
 
     public void addScene(Scene scene) {
