@@ -10,5 +10,6 @@ public interface MyPageRepositorySupport {
     List<MyPageFilmsWithMembersResponse> getMyPageFilms(String userId);
     List<MyPageArticlesResponse> getMyPageArticles(String userId);
     MyPageLikesResponse getMyPageLikes(String userId);
+    List<MyPageCommentsResponse> getMyPageComments(String userId);
 
 }

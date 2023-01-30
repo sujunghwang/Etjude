@@ -30,4 +30,8 @@ public class MyPageService {
     public MyPageLikesResponse getMyPageLikes(String userId){
         return myPageRepository.getMyPageLikes(userId);
     }
+
+    public List<MyPageCommentsResponse> getMyPageComments(String userId){
+        return myPageRepository.getMyPageComments(userId);
+    }
 }

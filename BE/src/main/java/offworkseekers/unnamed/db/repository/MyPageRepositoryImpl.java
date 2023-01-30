@@ -9,6 +9,7 @@ import offworkseekers.unnamed.api.response.*;
 import java.util.*;
 
 import static offworkseekers.unnamed.db.entity.QArticle.article;
+import static offworkseekers.unnamed.db.entity.QComment.comment;
 import static offworkseekers.unnamed.db.entity.QFilm.film;
 import static offworkseekers.unnamed.db.entity.QLikes.likes;
 import static offworkseekers.unnamed.db.entity.QStory.story;
@@ -119,5 +120,20 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                 .fetch();
 
         return new MyPageLikesResponse(articles, stories);
+    }
+
+    @Override
+    public List<MyPageCommentsResponse> getMyPageComments(String userId) {
+        System.out.println(userId);
+        return queryFactory
+                .select(Projections.constructor(MyPageCommentsResponse.class,
+                        comment.user.userId,
+                        comment.user.picture,
+                        comment.commentContents,
+                        comment.commentCreateTime,
+                        comment.article.articleId))
+                .from(comment)
+                .where(comment.user.userId.eq(userId))
+                .fetch();
     }
 }
