@@ -8,7 +8,6 @@ import offworkseekers.unnamed.api.response.StudioNavBarResponse;
 import offworkseekers.unnamed.api.response.StudioSettingResponse;
 import offworkseekers.unnamed.api.response.UserSearchResponse;
 import offworkseekers.unnamed.db.entity.Film;
-import offworkseekers.unnamed.db.repository.FilmRepository;
 import offworkseekers.unnamed.db.repository.UserRepository;
 import offworkseekers.unnamed.db.entity.Story;
 import offworkseekers.unnamed.db.entity.Studio;
@@ -29,7 +28,6 @@ public class StudioService {
 
     private final StudioRepository studioRepository;
     private final StoryRepository storyRepository;
-    private final FilmRepository filmRepository;
     private final UserRepository userRepository;
 
     public StudioNavBarResponse getStudioNavbar(Long studioId, String userId){
