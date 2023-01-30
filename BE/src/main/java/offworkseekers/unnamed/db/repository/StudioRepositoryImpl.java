@@ -15,7 +15,7 @@ public class StudioRepositoryImpl implements StudioRepositorySupport{
 
 
     @Override
-    public StudioNavBarResponse findStudioNavbar(Long studioId, Long userId) {
+    public StudioNavBarResponse findStudioNavbar(Long studioId, String userId) {
         Tuple tuple = queryFactory
                 .select(studio.studioTitle, user.nickName, user.picture)
                 .from(studio, user)
