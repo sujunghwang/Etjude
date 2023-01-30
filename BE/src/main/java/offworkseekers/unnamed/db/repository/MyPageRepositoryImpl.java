@@ -1,22 +1,16 @@
 package offworkseekers.unnamed.db.repository;
 
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.DateTimeExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import offworkseekers.unnamed.api.response.MyPageFilmsResponse;
+import offworkseekers.unnamed.api.response.MyPageFilmsWithMembersResponse;
 import offworkseekers.unnamed.api.response.MyPageStudiosResponse;
-import offworkseekers.unnamed.db.entity.QTeamMember;
-import offworkseekers.unnamed.db.entity.Story;
-import org.hibernate.SQLQuery;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
+import static offworkseekers.unnamed.db.entity.QFilm.film;
+import static offworkseekers.unnamed.db.entity.QStory.story;
 import static offworkseekers.unnamed.db.entity.QStudio.studio;
 import static offworkseekers.unnamed.db.entity.QTeamMember.teamMember;
 
@@ -44,6 +38,38 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
             temp.setStudioCreatedDate(temp.getStudioCreatedDate().minusDays(7));
         }
 
+        return result;
+    }
+
+    @Override
+    public List<MyPageFilmsWithMembersResponse> getMyPageFilms(String userId) {
+
+        List<MyPageFilmsResponse> myFilms = queryFactory
+                .select(Projections.constructor(MyPageFilmsResponse.class,
+                        film.filmId,
+                        story.category.categoryName,
+                        story.work.workTitle,
+                        story.storyTitle,
+                        film.studio.studioTitle,
+                        film.filmVideoUrl,
+                        film.filmCreatedDate,
+                        film.studio.studioEndDate))
+                .from(film, story)
+                .where(film.user.userId.eq(userId), film.studio.story.eq(story))
+                .fetch();
+
+        List<MyPageFilmsWithMembersResponse> result = new ArrayList<>();
+
+        for (int i = 0, len = myFilms.size(); i < len; i++) {
+            MyPageFilmsResponse temp = myFilms.get(i);
+            List<String> Members = queryFactory
+                    .select(teamMember.user.nickName)
+                    .from(studio, teamMember)
+                    .where(studio.studioTitle.eq(temp.getStudioTitle()), teamMember.studio.eq(studio))
+                    .fetch();
+
+            result.add(i, new MyPageFilmsWithMembersResponse(temp, Members));
+        }
         return result;
     }
 }
