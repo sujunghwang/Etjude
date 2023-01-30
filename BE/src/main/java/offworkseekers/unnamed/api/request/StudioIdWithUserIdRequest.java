@@ -7,15 +7,15 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class GetStudioNavbarRequest {
+public class StudioIdWithUserIdRequest {
 
     @JsonProperty(value = "studio_id")
     private Long studioId;
 
     @JsonProperty(value = "user_id")
-    private Long userId;
+    private String userId;
 
-    public GetStudioNavbarRequest(Long studioId, Long userId) {
+    public StudioIdWithUserIdRequest(Long studioId, String userId) {
         this.studioId = studioId;
         this.userId = userId;
     }

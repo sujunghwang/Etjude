@@ -15,7 +15,7 @@ public class StudioService {
 
     private final StudioRepository studioRepository;
 
-    public StudioNavBarResponse getStudioNavbar(Long studioId, Long userId){
+    public StudioNavBarResponse getStudioNavbar(Long studioId, String userId){
         return studioRepository.findStudioNavbar(studioId, userId);
     }
 
