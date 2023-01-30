@@ -1,13 +1,13 @@
-package offworkseekers.unnamed.api.response;
+package offworkseekers.unnamed.api.dto;
 
 import lombok.Getter;
 
 @Getter
-public class MyPageFollowResponse {
+public class MyPageFollowDto {
     String userId;
     String userPhotoUrl;
 
-    public MyPageFollowResponse(String userId, String userPhotoUrl) {
+    public MyPageFollowDto(String userId, String userPhotoUrl) {
         this.userId = userId;
         this.userPhotoUrl = userPhotoUrl;
     }
