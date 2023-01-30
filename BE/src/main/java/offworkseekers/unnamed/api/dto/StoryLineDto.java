@@ -1,4 +1,4 @@
-package offworkseekers.unnamed.api.response;
+package offworkseekers.unnamed.api.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,13 +9,13 @@ import java.time.LocalTime;
 
 @Getter
 @ToString
-public class LineResponse {
+public class StoryLineDto {
 
     private LocalTime lineTimeStamp;
     private String line;
 
     @Builder
-    public LineResponse(LocalTime lineTimeStamp, String line) {
+    public StoryLineDto(LocalTime lineTimeStamp, String line) {
         this.lineTimeStamp = lineTimeStamp;
         this.line = line;
     }

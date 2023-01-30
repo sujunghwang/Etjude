@@ -3,6 +3,7 @@ package offworkseekers.unnamed.api.response;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import offworkseekers.unnamed.api.dto.StoryLineDto;
 
 import java.util.List;
 
@@ -14,10 +15,10 @@ public class RoleWithLineOfSceneResponse {
     private Long roleId;
     private String rolePhotoUrl;
     private String roleName;
-    private List<LineResponse> lines;
+    private List<StoryLineDto> lines;
 
     @Builder
-    public RoleWithLineOfSceneResponse(Long roleId, String rolePhotoUrl, String roleName, List<LineResponse> lines) {
+    public RoleWithLineOfSceneResponse(Long roleId, String rolePhotoUrl, String roleName, List<StoryLineDto> lines) {
         this.roleId = roleId;
         this.rolePhotoUrl = rolePhotoUrl;
         this.roleName = roleName;
