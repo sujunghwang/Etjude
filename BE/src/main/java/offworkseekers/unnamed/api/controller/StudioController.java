@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.request.StudioCreateRequest;
 import offworkseekers.unnamed.api.request.StudioIdWithUserIdRequest;
-import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
-import offworkseekers.unnamed.api.response.StudioNavBarResponse;
-import offworkseekers.unnamed.api.response.StudioSettingResponse;
-import offworkseekers.unnamed.api.response.UserSearchResponse;
+import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.api.service.StoryService;
 import offworkseekers.unnamed.api.service.StudioService;
 import offworkseekers.unnamed.db.entity.Studio;
@@ -69,5 +66,11 @@ public class StudioController {
     public StudioSettingResponse getStudioSetting(@RequestBody @Valid StudioIdWithUserIdRequest studioIdWithUserIdRequest) {
         StudioSettingResponse studioSetting = studioService.getStudioSetting(studioIdWithUserIdRequest.getStudioId(), studioIdWithUserIdRequest.getUserId());
         return studioSetting;
+    }
+
+    @PostMapping(value = "api/v1/studio/film")
+    public List<StudioFilmListResponse> getStudioFilmList(@RequestBody @Valid Map<String, Long> param) {
+        Long studioId = param.get("studio_id");
+        return studioService.getStudioFilmList(studioId);
     }
 }

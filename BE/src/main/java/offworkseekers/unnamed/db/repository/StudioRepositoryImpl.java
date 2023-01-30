@@ -5,7 +5,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.response.StudioNavBarResponse;
 import offworkseekers.unnamed.api.response.StudioSettingResponse;
+import offworkseekers.unnamed.db.entity.Film;
 
+import java.util.List;
+
+import static offworkseekers.unnamed.db.entity.QFilm.film;
 import static offworkseekers.unnamed.db.entity.QStudio.studio;
 import static offworkseekers.unnamed.db.entity.QUser.user;
 
@@ -30,6 +34,15 @@ public class StudioRepositoryImpl implements StudioRepositorySupport{
                 .nickname(tuple.get(user.nickName))
                 .userPhotoUrl(tuple.get(user.picture))
                 .build();
+    }
+
+    @Override
+    public List<Film> getStudioFilmList(Long studioId) {
+        List<Film> fetch = queryFactory
+                .selectFrom(film)
+                .where(film.studio.studioId.eq(studioId))
+                .fetch();
+        return fetch;
     }
 
     @Override
