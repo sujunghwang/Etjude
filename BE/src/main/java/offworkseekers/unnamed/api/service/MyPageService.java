@@ -1,10 +1,7 @@
 package offworkseekers.unnamed.api.service;
 
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.api.response.MyPageArticlesResponse;
-import offworkseekers.unnamed.api.response.MyPageFilmsResponse;
-import offworkseekers.unnamed.api.response.MyPageFilmsWithMembersResponse;
-import offworkseekers.unnamed.api.response.MyPageStudiosResponse;
+import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.db.repository.MyPageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,5 +25,9 @@ public class MyPageService {
 
     public List<MyPageArticlesResponse> getMyPageArticle(String userId){
         return myPageRepository.getMyPageArticles(userId);
+    }
+
+    public MyPageLikesResponse getMyPageLikes(String userId){
+        return myPageRepository.getMyPageLikes(userId);
     }
 }
