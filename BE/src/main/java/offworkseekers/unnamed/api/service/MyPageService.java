@@ -34,4 +34,8 @@ public class MyPageService {
     public List<MyPageCommentsResponse> getMyPageComments(String userId){
         return myPageRepository.getMyPageComments(userId);
     }
+
+    public MyPageResponse getMyPage(String userId){
+        return myPageRepository.getMyPage(userId);
+    }
 }

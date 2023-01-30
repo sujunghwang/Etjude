@@ -46,10 +46,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "followerId")
+    @OneToMany(mappedBy = "follower")
     private List<Follow> followerIds = new ArrayList<>();
 
-    @OneToMany(mappedBy = "followingId")
+    @OneToMany(mappedBy = "following")
     private List<Follow> followingIds = new ArrayList<>();
 
 

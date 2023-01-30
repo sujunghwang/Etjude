@@ -11,5 +11,6 @@ public interface MyPageRepositorySupport {
     List<MyPageArticlesResponse> getMyPageArticles(String userId);
     MyPageLikesResponse getMyPageLikes(String userId);
     List<MyPageCommentsResponse> getMyPageComments(String userId);
+    MyPageResponse getMyPage(String userId);
 
 }
