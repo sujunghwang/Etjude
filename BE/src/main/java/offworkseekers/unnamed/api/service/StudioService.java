@@ -50,4 +50,11 @@ public class StudioService {
     public List<UserSearchResponse> searchUser(String keyword) {
         return userRepository.findUserSimple(keyword);
     }
+
+    public String getStudioStoryVideoUrl(Long studioId) {
+        Studio studio = studioRepository.findById(studioId).orElse(null);
+        Story story = storyRepository.findById(studio.getStory().getStoryId()).orElse(null);
+
+        return story.getStoryVideoUrl();
+    }
 }

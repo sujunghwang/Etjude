@@ -41,4 +41,10 @@ public class StudioController {
         String keyword = param.get("keyword");
         return studioService.searchUser(keyword);
     }
+
+    @PostMapping(value = "/api/v1/studio/story/video")
+    public String getStudioVideoUrl(@RequestBody @Valid Map<String, Long> param) {
+        Long studioId = param.get("studio_id");
+        return studioService.getStudioStoryVideoUrl(studioId);
+    }
 }
