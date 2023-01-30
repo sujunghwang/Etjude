@@ -6,15 +6,13 @@ import offworkseekers.unnamed.api.request.StudioCreateRequest;
 import offworkseekers.unnamed.api.request.StudioIdWithUserIdRequest;
 import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
 import offworkseekers.unnamed.api.response.StudioNavBarResponse;
+import offworkseekers.unnamed.api.response.StudioSettingResponse;
 import offworkseekers.unnamed.api.response.UserSearchResponse;
 import offworkseekers.unnamed.api.service.StoryService;
 import offworkseekers.unnamed.api.service.StudioService;
 import offworkseekers.unnamed.db.entity.Studio;
 import offworkseekers.unnamed.db.repository.StudioRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -65,5 +63,11 @@ public class StudioController {
         Studio studio = studioRepository.findById(studioId).orElse(null);
         Long storyId = studio.getStory().getStoryId();
         return storyService.roleWithLineOfSceneResponseList(storyId);
+    }
+
+    @PostMapping(value = "/api/v1/studio/scripts")
+    public StudioSettingResponse getStudioSetting(@RequestBody @Valid StudioIdWithUserIdRequest studioIdWithUserIdRequest) {
+        StudioSettingResponse studioSetting = studioService.getStudioSetting(studioIdWithUserIdRequest.getStudioId(), studioIdWithUserIdRequest.getUserId());
+        return studioSetting;
     }
 }

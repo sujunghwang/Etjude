@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.request.StudioCreateRequest;
 import offworkseekers.unnamed.api.response.StudioNavBarResponse;
+import offworkseekers.unnamed.api.response.StudioSettingResponse;
 import offworkseekers.unnamed.api.response.UserSearchResponse;
 import offworkseekers.unnamed.db.repository.UserRepository;
 import offworkseekers.unnamed.db.entity.Story;
@@ -56,6 +57,11 @@ public class StudioService {
         Story story = storyRepository.findById(studio.getStory().getStoryId()).orElse(null);
 
         return story.getStoryVideoUrl();
+    }
+
+    public StudioSettingResponse getStudioSetting(Long studioId, String userId) {
+        StudioSettingResponse studioSetting = studioRepository.findStudioSetting(studioId, userId);
+        return studioSetting;
     }
 
 }
