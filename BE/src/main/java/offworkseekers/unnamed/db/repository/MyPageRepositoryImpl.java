@@ -3,12 +3,14 @@ package offworkseekers.unnamed.db.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import offworkseekers.unnamed.api.response.MyPageArticlesResponse;
 import offworkseekers.unnamed.api.response.MyPageFilmsResponse;
 import offworkseekers.unnamed.api.response.MyPageFilmsWithMembersResponse;
 import offworkseekers.unnamed.api.response.MyPageStudiosResponse;
 
 import java.util.*;
 
+import static offworkseekers.unnamed.db.entity.QArticle.article;
 import static offworkseekers.unnamed.db.entity.QFilm.film;
 import static offworkseekers.unnamed.db.entity.QStory.story;
 import static offworkseekers.unnamed.db.entity.QStudio.studio;
@@ -71,5 +73,22 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
             result.add(i, new MyPageFilmsWithMembersResponse(temp, Members));
         }
         return result;
+    }
+
+    @Override
+    public List<MyPageArticlesResponse> getMyPageArticles(String userId) {
+
+        return queryFactory
+                .select(Projections.constructor(MyPageArticlesResponse.class,
+                        article.articleId,
+                        article.articleTitle,
+                        article.user.userId,
+                        article.user.picture,
+                        article.articleViewCount,
+                        article.articleCreatedDate))
+                .from(article)
+                .where(article.user.userId.eq(userId))
+                .fetch();
+
     }
 }
