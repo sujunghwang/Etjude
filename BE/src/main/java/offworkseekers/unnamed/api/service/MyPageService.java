@@ -1,6 +1,8 @@
 package offworkseekers.unnamed.api.service;
 
 import lombok.RequiredArgsConstructor;
+import offworkseekers.unnamed.api.response.MyPageFilmsResponse;
+import offworkseekers.unnamed.api.response.MyPageFilmsWithMembersResponse;
 import offworkseekers.unnamed.api.response.MyPageStudiosResponse;
 import offworkseekers.unnamed.db.repository.MyPageRepository;
 import org.springframework.stereotype.Service;
@@ -17,5 +19,9 @@ public class MyPageService {
 
     public List<MyPageStudiosResponse> getMyPageStudios(String userId){
         return myPageRepository.getMyPageStudios(userId);
+    }
+
+    public List<MyPageFilmsWithMembersResponse> getMyPageFilms(String userId){
+        return myPageRepository.getMyPageFilms(userId);
     }
 }
