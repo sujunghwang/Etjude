@@ -1,17 +1,16 @@
 package offworkseekers.unnamed.db.repository;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.api.response.MyPageArticlesResponse;
-import offworkseekers.unnamed.api.response.MyPageFilmsResponse;
-import offworkseekers.unnamed.api.response.MyPageFilmsWithMembersResponse;
-import offworkseekers.unnamed.api.response.MyPageStudiosResponse;
+import offworkseekers.unnamed.api.response.*;
 
 import java.util.*;
 
 import static offworkseekers.unnamed.db.entity.QArticle.article;
 import static offworkseekers.unnamed.db.entity.QFilm.film;
+import static offworkseekers.unnamed.db.entity.QLikes.likes;
 import static offworkseekers.unnamed.db.entity.QStory.story;
 import static offworkseekers.unnamed.db.entity.QStudio.studio;
 import static offworkseekers.unnamed.db.entity.QTeamMember.teamMember;
@@ -89,6 +88,36 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                 .from(article)
                 .where(article.user.userId.eq(userId))
                 .fetch();
+    }
 
+    @Override
+    public MyPageLikesResponse getMyPageLikes(String userId) {
+        List<MyPageLikesArticlesResponse> articles = queryFactory
+                .select(Projections.constructor(MyPageLikesArticlesResponse.class,
+                        article.articleId,
+                        article.articleTitle,
+                        article.user.userId,
+                        article.user.picture,
+                        article.articleViewCount,
+                        article.articleCreatedDate))
+                .from(article, likes)
+                .where(likes.division.eq(0), likes.user.userId.eq(userId), likes.videoId.eq(article.articleId.castToNum(Integer.class)))
+                .fetch();
+
+        List<MyPageLikesStoriesResponse> stories = queryFactory
+                .select(Projections.constructor(MyPageLikesStoriesResponse.class,
+                        story.storyId,
+                        story.storyThumbnailUrl,
+                        story.category.categoryName,
+                        story.work.workTitle,
+                        JPAExpressions.select(likes.count())
+                                .from(likes)
+                                .where(likes.division.eq(1),
+                                        likes.videoId.eq(story.storyId.castToNum(Integer.class)))))
+                .from(story, likes)
+                .where(likes.division.eq(1), likes.user.userId.eq(userId), likes.videoId.eq(story.storyId.castToNum(Integer.class)))
+                .fetch();
+
+        return new MyPageLikesResponse(articles, stories);
     }
 }

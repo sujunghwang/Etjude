@@ -1,11 +1,9 @@
 package offworkseekers.unnamed.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.api.response.MyPageArticlesResponse;
-import offworkseekers.unnamed.api.response.MyPageFilmsResponse;
-import offworkseekers.unnamed.api.response.MyPageFilmsWithMembersResponse;
-import offworkseekers.unnamed.api.response.MyPageStudiosResponse;
+import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.api.service.MyPageService;
+import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,5 +30,10 @@ public class MyPageController {
     @PostMapping("/api/v1/mypage/articles")
     public List<MyPageArticlesResponse> getMyPageArticles(@RequestBody Map<String, String> request){
         return myPageService.getMyPageArticle(request.get("user_id"));
+    }
+
+    @PostMapping("/api/v1/mypage/mylikes")
+    public MyPageLikesResponse getMyPageLikes(@RequestBody Map<String, String> request){
+        return myPageService.getMyPageLikes(request.get("user_id"));
     }
 }
