@@ -1,13 +1,14 @@
 package offworkseekers.unnamed.api.response;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalTime;
 
-@Data
+
 @Getter
+@ToString
 public class LineResponse {
 
     private LocalTime lineTimeStamp;

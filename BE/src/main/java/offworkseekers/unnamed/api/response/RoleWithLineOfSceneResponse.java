@@ -1,14 +1,14 @@
 package offworkseekers.unnamed.api.response;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import offworkseekers.unnamed.db.entity.Line;
+import lombok.ToString;
 
 import java.util.List;
 
-@Data
+
 @Getter
+@ToString
 public class RoleWithLineOfSceneResponse {
 
     private Long roleId;

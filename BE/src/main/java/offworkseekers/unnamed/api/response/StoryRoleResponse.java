@@ -1,11 +1,12 @@
 package offworkseekers.unnamed.api.response;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
-@Data
+
 @Getter
+@ToString
 public class StoryRoleResponse {
 
     private Long roleId;
