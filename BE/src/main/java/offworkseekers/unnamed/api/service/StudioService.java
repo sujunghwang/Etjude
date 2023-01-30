@@ -3,9 +3,12 @@ package offworkseekers.unnamed.api.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.request.StudioCreateRequest;
+import offworkseekers.unnamed.api.response.StudioFilmListResponse;
 import offworkseekers.unnamed.api.response.StudioNavBarResponse;
 import offworkseekers.unnamed.api.response.StudioSettingResponse;
 import offworkseekers.unnamed.api.response.UserSearchResponse;
+import offworkseekers.unnamed.db.entity.Film;
+import offworkseekers.unnamed.db.repository.FilmRepository;
 import offworkseekers.unnamed.db.repository.UserRepository;
 import offworkseekers.unnamed.db.entity.Story;
 import offworkseekers.unnamed.db.entity.Studio;
@@ -26,6 +29,7 @@ public class StudioService {
 
     private final StudioRepository studioRepository;
     private final StoryRepository storyRepository;
+    private final FilmRepository filmRepository;
     private final UserRepository userRepository;
 
     public StudioNavBarResponse getStudioNavbar(Long studioId, String userId){
@@ -62,6 +66,23 @@ public class StudioService {
     public StudioSettingResponse getStudioSetting(Long studioId, String userId) {
         StudioSettingResponse studioSetting = studioRepository.findStudioSetting(studioId, userId);
         return studioSetting;
+    }
+
+    public List<StudioFilmListResponse> getStudioFilmList(Long studioId) {
+        List<Film> studioFilmList = studioRepository.getStudioFilmList(studioId);
+
+        List<StudioFilmListResponse> responses = new ArrayList<>();
+
+        for (Film film : studioFilmList) {
+            responses.add(
+                    StudioFilmListResponse.builder()
+                            .filmVideoUrl(film.getFilmVideoUrl())
+                            .filmCreatedDate(film.getFilmCreatedDate())
+                            .filmEndDate(film.getFilmCreatedDate().plusDays(7))
+                            .build()
+            );
+        }
+        return responses;
     }
 
 }
