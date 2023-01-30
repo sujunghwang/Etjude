@@ -3,9 +3,8 @@ package offworkseekers.unnamed.db.repository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import offworkseekers.unnamed.api.response.LineResponse;
+import offworkseekers.unnamed.api.dto.StoryLineDto;
 import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
-import offworkseekers.unnamed.db.entity.Line;
 import offworkseekers.unnamed.db.entity.Role;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class RoleRepositoryImpl implements RoleRepositorySupport{
         return roleWithLineOfSceneResponse;
     }
 
-    private List<LineResponse> getFetch(Tuple tuple) {
+    private List<StoryLineDto> getFetch(Tuple tuple) {
         List<Tuple> fetch = queryFactory
                 .select(line.lineScript, line.lineTimestamp)
                 .from(line)
@@ -65,11 +64,11 @@ public class RoleRepositoryImpl implements RoleRepositorySupport{
                 .orderBy(line.lineTimestamp.asc())
                 .fetch();
 
-        List<LineResponse> lines = new ArrayList<>();
+        List<StoryLineDto> lines = new ArrayList<>();
 
         for (Tuple lineTuple : fetch) {
             lines.add(
-                    LineResponse.builder()
+                    StoryLineDto.builder()
                             .lineTimeStamp(lineTuple.get(line.lineTimestamp))
                             .line(lineTuple.get(line.lineScript))
                             .build()
