@@ -41,4 +41,9 @@ public class MyPageController {
     public List<MyPageCommentsResponse> getMyPageComments(@RequestBody Map<String, String> request){
         return myPageService.getMyPageComments(request.get("user_id"));
     }
+
+    @PostMapping("/api/v1/mypage")
+    public MyPageResponse getMyPage(@RequestBody Map<String, String> request){
+        return myPageService.getMyPage(request.get("user_id"));
+    }
 }

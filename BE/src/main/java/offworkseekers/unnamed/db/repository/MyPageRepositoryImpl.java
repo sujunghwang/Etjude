@@ -2,6 +2,7 @@ package offworkseekers.unnamed.db.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.response.*;
@@ -11,10 +12,12 @@ import java.util.*;
 import static offworkseekers.unnamed.db.entity.QArticle.article;
 import static offworkseekers.unnamed.db.entity.QComment.comment;
 import static offworkseekers.unnamed.db.entity.QFilm.film;
+import static offworkseekers.unnamed.db.entity.QFollow.follow;
 import static offworkseekers.unnamed.db.entity.QLikes.likes;
 import static offworkseekers.unnamed.db.entity.QStory.story;
 import static offworkseekers.unnamed.db.entity.QStudio.studio;
 import static offworkseekers.unnamed.db.entity.QTeamMember.teamMember;
+import static offworkseekers.unnamed.db.entity.QUser.user;
 
 @RequiredArgsConstructor
 public class MyPageRepositoryImpl implements MyPageRepositorySupport{
@@ -124,7 +127,6 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
 
     @Override
     public List<MyPageCommentsResponse> getMyPageComments(String userId) {
-        System.out.println(userId);
         return queryFactory
                 .select(Projections.constructor(MyPageCommentsResponse.class,
                         comment.user.userId,
@@ -135,5 +137,45 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                 .from(comment)
                 .where(comment.user.userId.eq(userId))
                 .fetch();
+    }
+
+    @Override
+    public MyPageResponse getMyPage(String userId) {
+
+        List<MyPageFollowResponse> followings = queryFactory
+                .select(Projections.constructor(MyPageFollowResponse.class,
+                        follow.following.userId,
+                        follow.following.picture))
+                .from(user, follow)
+                .where(user.in(
+                        JPAExpressions
+                                .select(follow.follower)
+                                .from(follow)
+                ), user.userId.eq(userId))
+                .fetch();
+
+        List<MyPageFollowResponse> followers = queryFactory
+                .select(Projections.constructor(MyPageFollowResponse.class,
+                        follow.follower.userId,
+                        follow.follower.picture))
+                .from(user, follow)
+                .where(user.in(
+                        JPAExpressions
+                                .select(follow.following)
+                                .from(follow)
+                ), user.userId.eq(userId))
+                .fetch();
+
+        String userPhotoUrl = queryFactory.select(user.picture).from(user).where(user.userId.eq(userId)).fetchOne();
+        String userNickName = queryFactory.select(user.nickName).from(user).where(user.userId.eq(userId)).fetchOne();
+        return new MyPageResponse(userPhotoUrl, userNickName, followings, followers);
+
+
+        /*
+        String userPhotoUrl;
+        String userNickName;
+        List<MyPageFollow> followings;
+        List<MyPageFollow> followers;
+        */
     }
 }
