@@ -1,6 +1,7 @@
 package offworkseekers.unnamed.api.service;
 
 import lombok.RequiredArgsConstructor;
+import offworkseekers.unnamed.api.response.MyPageArticlesResponse;
 import offworkseekers.unnamed.api.response.MyPageFilmsResponse;
 import offworkseekers.unnamed.api.response.MyPageFilmsWithMembersResponse;
 import offworkseekers.unnamed.api.response.MyPageStudiosResponse;
@@ -23,5 +24,9 @@ public class MyPageService {
 
     public List<MyPageFilmsWithMembersResponse> getMyPageFilms(String userId){
         return myPageRepository.getMyPageFilms(userId);
+    }
+
+    public List<MyPageArticlesResponse> getMyPageArticle(String userId){
+        return myPageRepository.getMyPageArticles(userId);
     }
 }
