@@ -2,9 +2,11 @@ package offworkseekers.unnamed.db.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import offworkseekers.unnamed.api.dto.MyPageFollowDto;
+import offworkseekers.unnamed.api.dto.MyPageLikesArticlesDto;
+import offworkseekers.unnamed.api.dto.MyPageLikesStoriesDto;
 import offworkseekers.unnamed.api.response.*;
 
 import java.util.*;
@@ -96,8 +98,8 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
 
     @Override
     public MyPageLikesResponse getMyPageLikes(String userId) {
-        List<MyPageLikesArticlesResponse> articles = queryFactory
-                .select(Projections.constructor(MyPageLikesArticlesResponse.class,
+        List<MyPageLikesArticlesDto> articles = queryFactory
+                .select(Projections.constructor(MyPageLikesArticlesDto.class,
                         article.articleId,
                         article.articleTitle,
                         article.user.userId,
@@ -108,8 +110,8 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                 .where(likes.division.eq(0), likes.user.userId.eq(userId), likes.videoId.eq(article.articleId.castToNum(Integer.class)))
                 .fetch();
 
-        List<MyPageLikesStoriesResponse> stories = queryFactory
-                .select(Projections.constructor(MyPageLikesStoriesResponse.class,
+        List<MyPageLikesStoriesDto> stories = queryFactory
+                .select(Projections.constructor(MyPageLikesStoriesDto.class,
                         story.storyId,
                         story.storyThumbnailUrl,
                         story.category.categoryName,
@@ -142,8 +144,8 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
     @Override
     public MyPageResponse getMyPage(String userId) {
 
-        List<MyPageFollowResponse> followings = queryFactory
-                .select(Projections.constructor(MyPageFollowResponse.class,
+        List<MyPageFollowDto> followings = queryFactory
+                .select(Projections.constructor(MyPageFollowDto.class,
                         follow.following.userId,
                         follow.following.picture))
                 .from(user, follow)
@@ -154,8 +156,8 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                 ), user.userId.eq(userId))
                 .fetch();
 
-        List<MyPageFollowResponse> followers = queryFactory
-                .select(Projections.constructor(MyPageFollowResponse.class,
+        List<MyPageFollowDto> followers = queryFactory
+                .select(Projections.constructor(MyPageFollowDto.class,
                         follow.follower.userId,
                         follow.follower.picture))
                 .from(user, follow)

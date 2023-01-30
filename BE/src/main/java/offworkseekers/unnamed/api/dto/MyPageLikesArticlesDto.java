@@ -1,11 +1,11 @@
-package offworkseekers.unnamed.api.response;
+package offworkseekers.unnamed.api.dto;
 
 import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Getter
-public class MyPageLikesArticlesResponse {
+public class MyPageLikesArticlesDto {
 
     Long articeId;
     String articleTitle;
@@ -14,7 +14,7 @@ public class MyPageLikesArticlesResponse {
     int articleViewCount;
     LocalDate articleCreatedDate;
 
-    public MyPageLikesArticlesResponse(Long articeId, String articleTitle, String userId, String userPhotoUrl, int articleViewCount, LocalDate articleCreatedDate) {
+    public MyPageLikesArticlesDto(Long articeId, String articleTitle, String userId, String userPhotoUrl, int articleViewCount, LocalDate articleCreatedDate) {
         this.articeId = articeId;
         this.articleTitle = articleTitle;
         this.userId = userId;
