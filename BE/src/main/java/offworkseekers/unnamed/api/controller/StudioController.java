@@ -4,9 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.request.StudioCreateRequest;
 import offworkseekers.unnamed.api.request.StudioIdWithUserIdRequest;
+import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
 import offworkseekers.unnamed.api.response.StudioNavBarResponse;
 import offworkseekers.unnamed.api.response.UserSearchResponse;
+import offworkseekers.unnamed.api.service.StoryService;
 import offworkseekers.unnamed.api.service.StudioService;
+import offworkseekers.unnamed.db.entity.Studio;
+import offworkseekers.unnamed.db.repository.StudioRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +27,9 @@ public class StudioController {
 
 
     private final StudioService studioService;
+    private final StoryService storyService;
+
+    private final StudioRepository studioRepository;
 
     @PostMapping(value = "/api/v1/studio/navbar")
     public StudioNavBarResponse getStudioNavbar(@RequestBody @Valid StudioIdWithUserIdRequest request) {
@@ -46,5 +53,17 @@ public class StudioController {
     public String getStudioVideoUrl(@RequestBody @Valid Map<String, Long> param) {
         Long studioId = param.get("studio_id");
         return studioService.getStudioStoryVideoUrl(studioId);
+    }
+
+    /**
+     * studio ID로 studio를 조회하므로 service layer로의 이동이 불필요하다고 판단하여,
+     * studio controller에서 repository를 참조하여 studio를 조회해옴.
+     */
+    @PostMapping(value = "/api/v1/studio/story/scripts")
+    public List<RoleWithLineOfSceneResponse> getStudioScripts(@RequestBody @Valid Map<String, Long> param) {
+        Long studioId = param.get("studio_id");
+        Studio studio = studioRepository.findById(studioId).orElse(null);
+        Long storyId = studio.getStory().getStoryId();
+        return storyService.roleWithLineOfSceneResponseList(storyId);
     }
 }
