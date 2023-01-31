@@ -33,7 +33,7 @@ public class StudioController {
     }
 
 
-    @PutMapping(value = "/api/v1/studio/create")
+    @PostMapping(value = "/api/v1/studio/create")
     public void createStudio(@RequestBody @Valid StudioCreateRequest studioCreateRequest) {
         studioService.saveStudio(studioCreateRequest);
     }
