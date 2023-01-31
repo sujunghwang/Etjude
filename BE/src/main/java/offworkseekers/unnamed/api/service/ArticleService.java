@@ -2,7 +2,7 @@ package offworkseekers.unnamed.api.service;
 
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.request.ArticleCreateRequest;
-import offworkseekers.unnamed.api.response.ArticleWithFilmUrlResponse;
+import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.db.entity.Article;
 import offworkseekers.unnamed.db.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -31,6 +31,25 @@ public class ArticleService {
         return articles;
     }
 
+    public List<SearchFilmResponse> getSearchArticleList(String keyword){
+        List<SearchFilmResponse> articles = articleRepository.getSearchArticles(keyword);
+        return articles;
+    }
+
+    public FilmDetailResponse getFilmDetail(Long articleId){
+        FilmDetailResponse filmDetail = articleRepository.getFilmDetail(articleId);
+        return filmDetail;
+    }
+
+    public List<PopularFilmResponse> getPopularArticleList(){
+        List<PopularFilmResponse> articles = articleRepository.getPopularArticles();
+        return articles;
+
+    }
+
+    public List<MyFilmListResponse> getModalFilmList(String userId) {
+        return articleRepository.getMyFilms(userId);
+    }
 
 
 
