@@ -3,6 +3,7 @@ package offworkseekers.unnamed.db.repository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.dto.StoryLineDto;
 import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
 import offworkseekers.unnamed.db.entity.Role;
@@ -15,6 +16,7 @@ import static offworkseekers.unnamed.db.entity.QRole.role;
 import static offworkseekers.unnamed.db.entity.QScene.scene;
 
 @RequiredArgsConstructor
+@Slf4j
 public class RoleRepositoryImpl implements RoleRepositorySupport{
 
     private final JPAQueryFactory queryFactory;
@@ -31,23 +33,33 @@ public class RoleRepositoryImpl implements RoleRepositorySupport{
     @Override
     public List<RoleWithLineOfSceneResponse> getRoleWithLines(Long storyId) {
         List<Tuple> fetch = queryFactory
-                .select(scene.sceneNumber, scene.sceneId, role.roleId, role.roleName, role.rolePhotoUrl)
-                .from(scene, role)
-                .where(scene.story.storyId.eq(storyId),
-                        role.story.storyId.eq(storyId))
-                .orderBy(scene.sceneId.asc())
+                .select(scene.sceneId, scene.sceneNumber, scene.role.roleId)
+                .from(scene)
+                .where(scene.story.storyId.eq(storyId))
+                .orderBy(
+                        scene.sceneNumber.asc()
+                )
                 .fetch();
-
+        
         List<RoleWithLineOfSceneResponse> roleWithLineOfSceneResponse = new ArrayList<>();
-
         for (Tuple tuple : fetch) {
+            Long roleId = tuple.get(scene.role.roleId);
+
+            Tuple nowRole = queryFactory
+                    .select(role.roleId, role.rolePhotoUrl, role.roleName)
+                    .from(role)
+                    .where(role.roleId.eq(roleId))
+                    .fetchOne();
+
             roleWithLineOfSceneResponse.add(
                     RoleWithLineOfSceneResponse.builder()
-                            .roleId(tuple.get(role.roleId))
-                            .rolePhotoUrl(tuple.get(role.rolePhotoUrl))
-                            .roleName(tuple.get(role.roleName))
+                            .roleId(nowRole.get(role.roleId))
+                            .rolePhotoUrl(nowRole.get(role.rolePhotoUrl))
+                            .roleName(nowRole.get(role.roleName))
+                            .sceneId(tuple.get(scene.sceneId))
+                            .sceneNumber(tuple.get(scene.sceneNumber))
                             .lines(
-                                    getFetch(tuple)
+                                    getFetch(tuple.get(scene.sceneId))
                             )
                             .build()
             );
@@ -56,11 +68,11 @@ public class RoleRepositoryImpl implements RoleRepositorySupport{
         return roleWithLineOfSceneResponse;
     }
 
-    private List<StoryLineDto> getFetch(Tuple tuple) {
+    private List<StoryLineDto> getFetch(Long sceneId) {
         List<Tuple> fetch = queryFactory
                 .select(line.lineScript, line.lineTimestamp)
                 .from(line)
-                .where(line.scene.sceneId.eq(tuple.get(scene.sceneId)))
+                .where(line.scene.sceneId.eq(sceneId))
                 .orderBy(line.lineTimestamp.asc())
                 .fetch();
 
