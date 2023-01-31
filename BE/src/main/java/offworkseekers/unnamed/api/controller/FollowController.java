@@ -18,7 +18,6 @@ public class FollowController {
     @PostMapping("/api/v1/follow")
     public Follow createFollow(@RequestBody CreateFollowRequest request){
 
-
         Follow follow = followService.createFollow(request.getMyUserId(), request.getYourUserId());
 
         return Follow.builder()
@@ -29,11 +28,6 @@ public class FollowController {
 
     @DeleteMapping("/api/v1/follow")
     public void deleteFollow(@RequestBody CreateFollowRequest request){
-
-        System.out.println(request.getMyUserId());
-        System.out.println(request.getYourUserId());
-        System.out.println("========================================================================");
-
         followService.deleteFollow(request.getMyUserId(), request.getYourUserId());
     }
 

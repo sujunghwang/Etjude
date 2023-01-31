@@ -26,9 +26,10 @@ public class FollowService {
                 .following(userRepository.findById(yourUserId).get())
                 .build();
 
+        // 이미 있으면 예외처리
+
         return followRepository.save(follow);
     }
-
 
     public void deleteFollow(String myUserId, String yourUserId){
 
