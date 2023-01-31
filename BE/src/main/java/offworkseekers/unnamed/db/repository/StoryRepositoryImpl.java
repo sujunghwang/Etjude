@@ -81,13 +81,12 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     @Override
     public List<StoryListResponse> getStorySearchList(String keyword, String categoryName) {
         List<Tuple> fetch = queryFactory
-                .select(story.storyId, story.storyThumbnailUrl, story.storyLike, story.storyTitle, category.categoryName, work.workTitle)
-                .from(story, category, work)
+                .select(story.storyId, story.storyThumbnailUrl, story.storyLike, story.storyTitle, story.category.categoryName, story.work.workTitle)
+                .from(story)
                 .where(
                         story.category.categoryName.eq(categoryName),
                         story.storyTitle.contains(keyword)
                 )
-                .groupBy(story.storyId)
                 .fetch();
 
         List<StoryListResponse> storySearchResult = new ArrayList<>();
@@ -99,8 +98,8 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                     .storyTitle(tuple.get(story.storyTitle))
                     .storyThumbnailUrl(tuple.get(story.storyThumbnailUrl))
                     .likeCount(tuple.get(story.storyLike))
-                    .categoryName(tuple.get(category.categoryName))
-                    .workTitle(tuple.get(work.workTitle))
+                    .categoryName(tuple.get(story.category.categoryName))
+                    .workTitle(tuple.get(story.work.workTitle))
                     .build()
             );
         }
