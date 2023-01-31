@@ -16,12 +16,12 @@ public class Follow {
     private Long followId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "follower_id")
-    private User followerId;
+    @JoinColumn(name = "follower")
+    private User follower;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "following_id")
-    private User followingId;
+    @JoinColumn(name = "following")
+    private User following;
 
     @Builder
     public Follow(
@@ -30,8 +30,8 @@ public class Follow {
             User followingId
     ){
         this.followId = followId;
-        this.followerId = followerId;
-        this.followingId = followingId;
+        this.follower = follower;
+        this.following = following;
     }
 
 }

@@ -1,26 +1,31 @@
 package offworkseekers.unnamed.api.response;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import offworkseekers.unnamed.db.entity.Line;
+import lombok.ToString;
+import offworkseekers.unnamed.api.dto.StoryLineDto;
 
 import java.util.List;
 
-@Data
+
 @Getter
+@ToString
 public class RoleWithLineOfSceneResponse {
 
     private Long roleId;
     private String rolePhotoUrl;
     private String roleName;
-    private List<LineResponse> lines;
+    private Long sceneId;
+    private int sceneNumber;
+    private List<StoryLineDto> lines;
 
     @Builder
-    public RoleWithLineOfSceneResponse(Long roleId, String rolePhotoUrl, String roleName, List<LineResponse> lines) {
+    public RoleWithLineOfSceneResponse(Long roleId, String rolePhotoUrl, String roleName, Long sceneId, int sceneNumber, List<StoryLineDto> lines) {
         this.roleId = roleId;
         this.rolePhotoUrl = rolePhotoUrl;
         this.roleName = roleName;
+        this.sceneId = sceneId;
+        this.sceneNumber = sceneNumber;
         this.lines = lines;
     }
 }
