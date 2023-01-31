@@ -15,13 +15,17 @@ public class RoleWithLineOfSceneResponse {
     private Long roleId;
     private String rolePhotoUrl;
     private String roleName;
+    private Long sceneId;
+    private int sceneNumber;
     private List<StoryLineDto> lines;
 
     @Builder
-    public RoleWithLineOfSceneResponse(Long roleId, String rolePhotoUrl, String roleName, List<StoryLineDto> lines) {
+    public RoleWithLineOfSceneResponse(Long roleId, String rolePhotoUrl, String roleName, Long sceneId, int sceneNumber, List<StoryLineDto> lines) {
         this.roleId = roleId;
         this.rolePhotoUrl = rolePhotoUrl;
         this.roleName = roleName;
+        this.sceneId = sceneId;
+        this.sceneNumber = sceneNumber;
         this.lines = lines;
     }
 }
