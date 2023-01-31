@@ -2,18 +2,9 @@ package offworkseekers.unnamed.api.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
-import offworkseekers.unnamed.api.response.StoryDetailResponse;
-import offworkseekers.unnamed.api.response.StoryListResponse;
-import offworkseekers.unnamed.api.response.StoryRoleResponse;
-import offworkseekers.unnamed.db.entity.Likes;
-import offworkseekers.unnamed.db.entity.Role;
-import offworkseekers.unnamed.db.entity.Story;
-import offworkseekers.unnamed.db.entity.User;
-import offworkseekers.unnamed.db.repository.LikesRepository;
-import offworkseekers.unnamed.db.repository.RoleRepository;
-import offworkseekers.unnamed.db.repository.StoryRepository;
-import offworkseekers.unnamed.db.repository.UserRepository;
+import offworkseekers.unnamed.api.response.*;
+import offworkseekers.unnamed.db.entity.*;
+import offworkseekers.unnamed.db.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,4 +88,5 @@ public class StoryService {
     public Optional<Likes> getStoryLikeStatus(int storyId, int division, String userId){
         return likesRepository.findLikeConnection(storyId, division, userId);
     }
+
 }
