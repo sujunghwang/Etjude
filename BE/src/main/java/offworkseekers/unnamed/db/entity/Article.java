@@ -31,6 +31,9 @@ public class Article {
     @Column(name = "article_view_count")
     private int articleViewCount;
 
+    @Column(name = "article_like_count")
+    private int articleLikeCount;
+
     @Column(name = "article_created_date")
     private LocalDate articleCreatedDate;
 
@@ -53,6 +56,7 @@ public class Article {
             String articleThumbnailUrl,
             LocalDate articleCreatedDate,
             int articleViewCount,
+            int articleLikeCount,
             Film film,
             User user
     ){
@@ -62,6 +66,7 @@ public class Article {
         this.articleThumbnailUrl = articleThumbnailUrl;
         this.articleCreatedDate = articleCreatedDate;
         this.articleViewCount = articleViewCount;
+        this.articleLikeCount = articleLikeCount;
         this.film = film;
         this.user = user;
     }
