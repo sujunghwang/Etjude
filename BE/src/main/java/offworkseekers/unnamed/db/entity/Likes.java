@@ -1,13 +1,14 @@
 package offworkseekers.unnamed.db.entity;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "likes")
-@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Likes {
@@ -29,7 +30,7 @@ public class Likes {
 
     @Builder
     public Likes(
-            @NotNull Long likesId,
+            Long likesId,
             int division,
             int videoId,
             User user
