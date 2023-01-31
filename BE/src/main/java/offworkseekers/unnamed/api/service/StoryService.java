@@ -6,10 +6,14 @@ import offworkseekers.unnamed.api.response.RoleWithLineOfSceneResponse;
 import offworkseekers.unnamed.api.response.StoryDetailResponse;
 import offworkseekers.unnamed.api.response.StoryListResponse;
 import offworkseekers.unnamed.api.response.StoryRoleResponse;
+import offworkseekers.unnamed.db.entity.Likes;
 import offworkseekers.unnamed.db.entity.Role;
 import offworkseekers.unnamed.db.entity.Story;
+import offworkseekers.unnamed.db.entity.User;
+import offworkseekers.unnamed.db.repository.LikesRepository;
 import offworkseekers.unnamed.db.repository.RoleRepository;
 import offworkseekers.unnamed.db.repository.StoryRepository;
+import offworkseekers.unnamed.db.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +28,9 @@ import java.util.Optional;
 public class StoryService {
 
     private final StoryRepository storyRepository;
-
+    private final LikesRepository likesRepository;
     private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
 
     public List<StoryListResponse> storyListRecommendedByLike() {
         List<StoryListResponse> storyListRecommendedByLike = storyRepository.getStoryListRecommendedByLike();
@@ -69,4 +74,27 @@ public class StoryService {
         return storySearchList;
     }
 
+    @Transactional
+    public void editStoryLike(int storyId, int division, String userId) {
+        Optional<Likes> likes = getStoryLikeStatus(storyId, division, userId);
+        if (likes.isEmpty()) {
+            User user = userRepository.findById(userId).orElse(null);
+            Likes build = Likes.builder()
+                    .videoId(storyId)
+                    .division(division)
+                    .user(user)
+                    .build();
+            likesRepository.save(build);
+        }
+
+    }
+    @Transactional
+    public void deleteStoryLike(int storyId, int division, String userId) {
+        Optional<Likes> likes = getStoryLikeStatus(storyId, division, userId);
+        likesRepository.deleteById(likes.get().getLikesId());
+    }
+
+    public Optional<Likes> getStoryLikeStatus(int storyId, int division, String userId){
+        return likesRepository.findLikeConnection(storyId, division, userId);
+    }
 }
