@@ -34,23 +34,23 @@ public class User {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @OneToMany(mappedBy = "user")
-    private List<TeamMember> teamMemberIds = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<TeamMember> teamMemberIds = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Film> films = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Article> articles = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Film> films = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Article> articles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "follower")
-    private List<Follow> followerIds = new ArrayList<>();
-
-    @OneToMany(mappedBy = "following")
-    private List<Follow> followingIds = new ArrayList<>();
+//    @OneToMany(mappedBy = "follower")
+//    private List<Follow> followerIds = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "following")
+//    private List<Follow> followingIds = new ArrayList<>();
 
 
     @Builder
