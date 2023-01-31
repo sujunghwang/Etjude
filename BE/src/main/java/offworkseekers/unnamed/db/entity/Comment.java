@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comment")
@@ -18,6 +19,9 @@ public class Comment {
     @Column(name = "comment_contents")
     private String commentContents;
 
+    @Column(name = "comment_create_time")
+    private LocalDateTime commentCreateTime;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -30,11 +34,13 @@ public class Comment {
     public Comment(
             @NotNull Long commentId,
             String commentContents,
+            LocalDateTime commentCreateTime,
             User user,
             Article article
     ){
         this.commentId = commentId;
         this.commentContents = commentContents;
+        this.commentCreateTime = commentCreateTime;
         this.user = user;
         this.article = article;
     }

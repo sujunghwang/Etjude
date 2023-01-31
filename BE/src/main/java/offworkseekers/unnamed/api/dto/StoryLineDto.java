@@ -1,20 +1,21 @@
-package offworkseekers.unnamed.api.response;
+package offworkseekers.unnamed.api.dto;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalTime;
 
-@Data
+
 @Getter
-public class LineResponse {
+@ToString
+public class StoryLineDto {
 
     private LocalTime lineTimeStamp;
     private String line;
 
     @Builder
-    public LineResponse(LocalTime lineTimeStamp, String line) {
+    public StoryLineDto(LocalTime lineTimeStamp, String line) {
         this.lineTimeStamp = lineTimeStamp;
         this.line = line;
     }
