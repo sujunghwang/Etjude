@@ -1,6 +1,7 @@
 package offworkseekers.unnamed.db.repository;
 
 import offworkseekers.unnamed.api.response.StudioNavBarResponse;
+import offworkseekers.unnamed.api.response.StudioRecordListResponse;
 import offworkseekers.unnamed.api.response.StudioSettingResponse;
 import offworkseekers.unnamed.db.entity.Film;
 
@@ -13,5 +14,7 @@ public interface StudioRepositorySupport {
     StudioSettingResponse findStudioSetting(Long studioId, String userId);
 
     List<Film> getStudioFilmList(Long studioId);
+
+    List<StudioRecordListResponse> findRecordingByStudioId(Long studioId);
 
 }

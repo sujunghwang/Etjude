@@ -68,9 +68,15 @@ public class StudioController {
         return studioSetting;
     }
 
-    @PostMapping(value = "api/v1/studio/film")
+    @PostMapping(value = "/api/v1/studio/film")
     public List<StudioFilmListResponse> getStudioFilmList(@RequestBody @Valid Map<String, Long> param) {
         Long studioId = param.get("studio_id");
         return studioService.getStudioFilmList(studioId);
+    }
+
+    @PostMapping(value = "/api/v1/studio/recording")
+    public List<StudioRecordListResponse> getStudioRecordList(@RequestBody @Valid Map<String, Long> param){
+        Long studioId = param.get("studio_id");
+        return studioService.getStoryRecordingList(studioId);
     }
 }

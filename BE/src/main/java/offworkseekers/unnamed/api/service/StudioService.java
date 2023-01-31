@@ -3,17 +3,11 @@ package offworkseekers.unnamed.api.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.request.StudioCreateRequest;
-import offworkseekers.unnamed.api.response.StudioFilmListResponse;
-import offworkseekers.unnamed.api.response.StudioNavBarResponse;
-import offworkseekers.unnamed.api.response.StudioSettingResponse;
-import offworkseekers.unnamed.api.response.UserSearchResponse;
-import offworkseekers.unnamed.db.entity.Film;
-import offworkseekers.unnamed.db.repository.UserRepository;
-import offworkseekers.unnamed.db.entity.Story;
-import offworkseekers.unnamed.db.entity.Studio;
-import offworkseekers.unnamed.db.entity.User;
+import offworkseekers.unnamed.api.response.*;
+import offworkseekers.unnamed.db.entity.*;
 import offworkseekers.unnamed.db.repository.StoryRepository;
 import offworkseekers.unnamed.db.repository.StudioRepository;
+import offworkseekers.unnamed.db.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +75,10 @@ public class StudioService {
             );
         }
         return responses;
+    }
+
+    public List<StudioRecordListResponse> getStoryRecordingList(Long studioId) {
+        return studioRepository.findRecordingByStudioId(studioId);
     }
 
 }
