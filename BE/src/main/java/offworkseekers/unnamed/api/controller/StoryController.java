@@ -6,6 +6,9 @@ import offworkseekers.unnamed.api.response.StoryDetailResponse;
 import offworkseekers.unnamed.api.response.StoryListResponse;
 import offworkseekers.unnamed.api.response.StoryRoleResponse;
 import offworkseekers.unnamed.api.service.StoryService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -51,12 +54,16 @@ public class StoryController {
     }
 
     @PutMapping(value = "/api/v1/story/like")
-    public void storyLike(@RequestBody @Valid Map<String, Object> param) {
+    public ResponseEntity storyLike(@RequestBody @Valid Map<String, Object> param) {
         int storyId = (int) param.get("story_id");
         int division = (int) param.get("division");
         String userId = (String) param.get("user_id");
 
+        if (userId == null || userId.replaceAll(" ", "").equals("")) {
+            return ResponseEntity.badRequest().build();
+        }
         storyService.editStoryLike(storyId, division, userId);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(value = "/api/v1/story/like")
