@@ -7,9 +7,11 @@ import offworkseekers.unnamed.api.response.StoryDetailResponse;
 import offworkseekers.unnamed.api.response.StoryListResponse;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static offworkseekers.unnamed.db.entity.QCategory.category;
+import static offworkseekers.unnamed.db.entity.QLikes.likes;
 import static offworkseekers.unnamed.db.entity.QStory.story;
 import static offworkseekers.unnamed.db.entity.QStudio.studio;
 import static offworkseekers.unnamed.db.entity.QWork.work;
@@ -22,13 +24,10 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     @Override
     public List<StoryListResponse> getStoryListRecommendedByLike() {
         List<Tuple> fetch = queryFactory
-                .select(story.storyId, story.storyThumbnailUrl, story.storyLike, story.storyTitle, category.categoryName, work.workTitle)
+                .select(story.storyId, story.storyThumbnailUrl, story.storyTitle, category.categoryName, work.workTitle)
                 .from(story, category, work)
                 .where(story.category.categoryId.eq(category.categoryId),
                         story.work.workId.eq(work.workId))
-                .orderBy(
-                        story.storyLike.desc()
-                )
                 .fetch();
 
         List<StoryListResponse> storyListRecommendedByLikeResponse = new ArrayList<>();
@@ -38,20 +37,34 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                     .storyId(tuple.get(story.storyId))
                     .storyTitle(tuple.get(story.storyTitle))
                     .storyThumbnailUrl(tuple.get(story.storyThumbnailUrl))
-                    .likeCount(tuple.get(story.storyLike))
+                    .likeCount(
+                            getStoryLikeCount(tuple.get(story.storyId))
+                    )
                     .categoryName(tuple.get(category.categoryName))
                     .workTitle(tuple.get(work.workTitle))
                     .build()
             );
         }
+        Collections.sort(storyListRecommendedByLikeResponse, (o1, o2) -> o2.getLikeCount() - o1.getLikeCount());
 
         return storyListRecommendedByLikeResponse;
+    }
+
+    private int getStoryLikeCount(Long storyId) {
+
+        Long result = queryFactory.select(likes.count())
+                .from(likes)
+                .where(likes.division.eq(1),
+                        likes.articleStoryId.eq(Math.toIntExact(storyId)))
+                .fetchOne();
+
+        return Math.toIntExact(result);
     }
 
     @Override
     public StoryDetailResponse getStoryDetail(Long storyId) {
         Tuple tuple = queryFactory
-                .select(story.storyVideoUrl, category.categoryName, work.workTitle, story.storyTitle, story.storySummary, story.storyLike)
+                .select(story.storyVideoUrl, category.categoryName, work.workTitle, story.storyTitle, story.storySummary)
                 .from(story, work, category)
                 .where(story.storyId.eq(storyId),
                         story.category.categoryId.eq(category.categoryId),
@@ -66,7 +79,9 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                 .fetchOne();
 
         StoryDetailResponse storyDetail = StoryDetailResponse.builder()
-                .storyLikeCount(tuple.get(story.storyLike))
+                .storyLikeCount(
+                        getStoryLikeCount(tuple.get(story.storyId))
+                )
                 .studioStack(Math.toIntExact(studioStack))
                 .storySummary(tuple.get(story.storySummary))
                 .storyVideoUrl(tuple.get(story.storyVideoUrl))
@@ -81,8 +96,8 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
     @Override
     public List<StoryListResponse> getStorySearchList(String keyword, String categoryName) {
         List<Tuple> fetch = queryFactory
-                .select(story.storyId, story.storyThumbnailUrl, story.storyLike, story.storyTitle, story.category.categoryName, story.work.workTitle)
-                .from(story)
+                .select(story.storyId, story.storyThumbnailUrl, story.storyTitle, category.categoryName, work.workTitle)
+                .from(story, category, work)
                 .where(
                         story.category.categoryName.eq(categoryName),
                         story.storyTitle.contains(keyword)
@@ -97,9 +112,11 @@ public class StoryRepositoryImpl implements StoryRepositorySupport{
                     .storyId(tuple.get(story.storyId))
                     .storyTitle(tuple.get(story.storyTitle))
                     .storyThumbnailUrl(tuple.get(story.storyThumbnailUrl))
-                    .likeCount(tuple.get(story.storyLike))
-                    .categoryName(tuple.get(story.category.categoryName))
-                    .workTitle(tuple.get(story.work.workTitle))
+                    .likeCount(
+                            getStoryLikeCount(tuple.get(story.storyId))
+                    )
+                    .categoryName(tuple.get(category.categoryName))
+                    .workTitle(tuple.get(work.workTitle))
                     .build()
             );
         }
