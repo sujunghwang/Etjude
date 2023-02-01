@@ -8,14 +8,16 @@ import java.util.List;
 @Getter
 public class MyPageResponse {
 
-    String userPhotoUrl;
-    String userNickName;
+    MyPageSimpleResponse myPageSimpleResponse;
+    int followerCount;
+    int followingCount;
     List<MyPageFollowDto> followings;
     List<MyPageFollowDto> followers;
 
-    public MyPageResponse(String userPhotoUrl, String userNickName, List<MyPageFollowDto> followings, List<MyPageFollowDto> followers) {
-        this.userPhotoUrl = userPhotoUrl;
-        this.userNickName = userNickName;
+    public MyPageResponse(MyPageSimpleResponse myPageSimpleResponse, int followerCount, int followingCount, List<MyPageFollowDto> followings, List<MyPageFollowDto> followers) {
+        this.myPageSimpleResponse = myPageSimpleResponse;
+        this.followerCount = followerCount;
+        this.followingCount = followingCount;
         this.followings = followings;
         this.followers = followers;
     }
