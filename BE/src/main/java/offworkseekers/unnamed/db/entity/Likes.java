@@ -21,8 +21,8 @@ public class Likes {
     @Column(name = "division")
     private int division;
 
-    @Column(name = "video_id")
-    private int videoId;
+    @Column(name = "article_story_id")
+    private int articleStoryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -32,12 +32,12 @@ public class Likes {
     public Likes(
             Long likesId,
             int division,
-            int videoId,
+            int articleStoryId,
             User user
     ){
         this.likesId = likesId;
         this.division = division;
-        this.videoId = videoId;
+        this.articleStoryId = articleStoryId;
         this.user = user;
     }
 

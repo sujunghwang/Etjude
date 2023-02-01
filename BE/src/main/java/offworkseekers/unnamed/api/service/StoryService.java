@@ -71,7 +71,7 @@ public class StoryService {
         if (likes.isEmpty()) {
             User user = userRepository.findById(userId).orElse(null);
             Likes build = Likes.builder()
-                    .videoId(storyId)
+                    .articleStoryId(storyId)
                     .division(division)
                     .user(user)
                     .build();
