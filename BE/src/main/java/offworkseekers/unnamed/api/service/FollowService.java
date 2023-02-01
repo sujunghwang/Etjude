@@ -36,4 +36,11 @@ public class FollowService {
         followRepository.deleteFollowByFollowerAndFollowing(
                 userRepository.findById(myUserId).get(), userRepository.findById(yourUserId).get());
     }
+
+    public boolean getFollowByFollowingFollower(String myUserId, String yourUserId){
+        Follow follow = followRepository.findByFollowerAndFollowing(userRepository.findById(myUserId).get(), userRepository.findById(yourUserId).get());
+        if (follow != null){
+            return true;
+        } else return false;
+    }
 }

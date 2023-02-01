@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.request.CreateFollowRequest;
 import offworkseekers.unnamed.api.service.FollowService;
 import offworkseekers.unnamed.db.entity.Follow;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,14 +17,17 @@ public class FollowController {
     private final FollowService followService;
 
     @PostMapping("/api/v1/follow")
-    public Follow createFollow(@RequestBody CreateFollowRequest request){
+    public ResponseEntity createFollow(@RequestBody CreateFollowRequest request){
 
-        Follow follow = followService.createFollow(request.getMyUserId(), request.getYourUserId());
+        String myUserId = request.getMyUserId();
+        String yourUserId = request.getYourUserId();
 
-        return Follow.builder()
-                .following(follow.getFollowing())
-                .follower(follow.getFollower())
-                .build();
+        if(followService.getFollowByFollowingFollower(myUserId, yourUserId))
+            return ResponseEntity.badRequest().build();
+
+        Follow follow = followService.createFollow(myUserId, yourUserId);
+
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/api/v1/follow")
