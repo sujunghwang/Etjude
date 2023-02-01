@@ -18,9 +18,8 @@ public class BoardController {
     private final ArticleService articleService;
 
     @PutMapping(value = "/api/v1/board/create")
-    public CreateArticleResponse saveArticle(@RequestBody @Valid ArticleCreateRequest request) {
-        Article article = articleService.createArticle(request);
-        return new CreateArticleResponse(article.getArticleId(), article.getArticleContent(), article.getArticleTitle(), article.getArticleThumbnailUrl());
+    public void saveArticle(@RequestBody @Valid ArticleCreateRequest request) {
+        articleService.createArticle(request);
     }
 
     @GetMapping(value = "/api/v1/board")
@@ -54,5 +53,18 @@ public class BoardController {
         return articleService.getModalFilmList(userId);
     }
 
+
+    @PostMapping(value = "/api/v1/board/like")
+    public boolean storyLikeStatus(@RequestBody @Valid Map<String, Object> param) {
+        int articleId = (int) param.get("article_id");
+        int division = (int) param.get("division");
+        String userId = (String) param.get("user_id");
+
+        if (articleService.getArticleLikeStatus(articleId, division, userId).isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
 
 }
