@@ -3,6 +3,7 @@ package offworkseekers.unnamed.api.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import offworkseekers.unnamed.api.request.ArticleCreateRequest;
+import offworkseekers.unnamed.api.request.ArticleEditRequest;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.db.entity.Article;
 import offworkseekers.unnamed.db.entity.Film;
@@ -30,7 +31,6 @@ public class ArticleService {
     private final StudioRepository studioRepository;
     @Transactional
     public void createArticle(ArticleCreateRequest request) {
-        System.out.println(request.toString());
         String userId = request.getUserId();
         Long filmId = request.getFilmId();
         User user = userRepository.findById(userId).orElseThrow(IllegalArgumentException::new);
@@ -77,5 +77,46 @@ public class ArticleService {
         return likesRepository.findArticleLikeConnection(articleId, division, userId);
     }
 
+    @Transactional
+    public void editArticleLike(int articleId, int division, String userId) {
+        Optional<Likes> likes = getArticleLikeStatus(articleId, division, userId);
+        if (likes.isEmpty()) {
+            User user = userRepository.findById(userId).orElse(null);
+            Likes build = Likes.builder()
+                    .articleStoryId(articleId)
+                    .division(division)
+                    .user(user)
+                    .build();
+            likesRepository.save(build);
+        }
+
+    }
+    @Transactional
+    public void deleteArticleLike(int storyId, int division, String userId) {
+        Optional<Likes> likes = getArticleLikeStatus(storyId, division, userId);
+        likesRepository.deleteById(likes.get().getLikesId());
+    }
+
+    @Transactional
+    public void deleteArticle(Long articleId, String userId) {
+        Article article = articleRepository.findById(articleId).orElse(null);
+        String articleWriterId = article.getUser().getUserId();
+        if(articleWriterId.equals(userId)){
+            articleRepository.deleteById(articleId);
+        }
+    }
+
+    @Transactional
+    public void editArticle(ArticleEditRequest request) {
+        String userId = request.getUserId();
+        Article article = articleRepository.findById(request.getArticleId()).orElse(null);
+        String articleWriterId = article.getUser().getUserId();
+        if(articleWriterId.equals(userId)){
+            article.setArticleTitle(request.getArticleTitle());
+            article.setArticleContent(request.getArticleContent());
+            articleRepository.save(article);
+        }
+
+    }
 
 }

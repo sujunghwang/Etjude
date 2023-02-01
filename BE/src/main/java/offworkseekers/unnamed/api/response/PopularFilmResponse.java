@@ -15,6 +15,7 @@ public class PopularFilmResponse {
     LocalDate articleCreatedDate;
     String writerName;
     String writerPhotoUrl;
+    int likeCount;
 
     @Builder
     public PopularFilmResponse(Long articleId, String articleTitle, int articleViewCnt, Long filmId, String articleThumbnailUrl, LocalDate articleCreatedDate, String writerName, String writerPhotoUrl) {
