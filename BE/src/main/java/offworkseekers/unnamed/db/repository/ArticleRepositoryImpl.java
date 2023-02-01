@@ -11,6 +11,7 @@ import offworkseekers.unnamed.db.entity.Story;
 import offworkseekers.unnamed.db.entity.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static offworkseekers.unnamed.db.entity.QArticle.article;
@@ -89,7 +90,6 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         article.articleTitle,
                         article.articleContent,
                         article.articleCreatedDate,
-                        article.articleLikeCount,
                         user.email,
                         user.nickName,
                         user.picture,
@@ -131,10 +131,8 @@ public class ArticleRepositoryImpl implements ArticleRepositorySupport {
                         article.user.email,
                         article.user.picture))
                 .from(article)
-                .orderBy(
-                        article.articleLikeCount.desc()
-                )
                 .fetch();
+        Collections.sort(result, (o1, o2) -> o2.getLikeCount() - o1.getLikeCount());
         return result;
     }
 

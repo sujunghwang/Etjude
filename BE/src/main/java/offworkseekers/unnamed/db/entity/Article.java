@@ -1,6 +1,7 @@
 package offworkseekers.unnamed.db.entity;
 
 import lombok.*;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "article")
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Article {
 

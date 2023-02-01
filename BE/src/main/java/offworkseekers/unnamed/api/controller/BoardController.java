@@ -2,9 +2,11 @@ package offworkseekers.unnamed.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.request.ArticleCreateRequest;
+import offworkseekers.unnamed.api.request.ArticleEditRequest;
 import offworkseekers.unnamed.api.response.*;
 import offworkseekers.unnamed.api.service.ArticleService;
 import offworkseekers.unnamed.db.entity.Article;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -65,6 +67,40 @@ public class BoardController {
         }
 
         return true;
+    }
+
+    @PutMapping(value = "/api/v1/board/like")
+    public ResponseEntity storyLike(@RequestBody @Valid Map<String, Object> param) {
+        int articleId = (int) param.get("article_id");
+        int division = (int) param.get("division");
+        String userId = (String) param.get("user_id");
+
+        if (userId == null || userId.replaceAll(" ", "").equals("")) {
+            return ResponseEntity.badRequest().build();
+        }
+        articleService.editArticleLike(articleId, division, userId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/api/v1/board/like")
+    public void storyLikeCancel(@RequestBody @Valid Map<String, Object> param) {
+        int articleId = (int) param.get("article_id");
+        int division = (int) param.get("division");
+        String userId = (String) param.get("user_id");
+
+        articleService.deleteArticleLike(articleId, division, userId);
+    }
+
+    @DeleteMapping(value = "/api/v1/board/delete")
+    public void articleDelete(@RequestBody @Valid Map<String, Object> request) {
+        Long articleId = Long.parseLong(String.valueOf(request.get("article_id")));
+        String userId = (String) request.get("user_id");
+        articleService.deleteArticle(articleId, userId);
+    }
+
+    @PatchMapping(value = "/api/v1/board/edit")
+    public void articleEdit(@RequestBody @Valid ArticleEditRequest request){
+        articleService.editArticle(request);
     }
 
 }
