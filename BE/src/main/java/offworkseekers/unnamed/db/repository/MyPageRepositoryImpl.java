@@ -144,16 +144,21 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
     @Override
     public MyPageResponse getMyPage(String userId) {
 
+        MyPageSimpleResponse myPageSimpleResponse = queryFactory
+                .select(Projections.constructor(MyPageSimpleResponse.class,
+                        user.picture,
+                        user.nickName
+                        ))
+                .from(user)
+                .where(user.userId.eq(userId))
+                .fetchOne();
+
         List<MyPageFollowDto> followings = queryFactory
                 .select(Projections.constructor(MyPageFollowDto.class,
                         follow.following.userId,
                         follow.following.picture))
-                .from(user, follow)
-                .where(user.in(
-                        JPAExpressions
-                                .select(follow.follower)
-                                .from(follow)
-                ), user.userId.eq(userId))
+                .from(follow)
+                .where(follow.follower.userId.eq(userId))
                 .fetch();
 
         List<MyPageFollowDto> followers = queryFactory
@@ -161,16 +166,10 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                         follow.follower.userId,
                         follow.follower.picture))
                 .from(user, follow)
-                .where(user.in(
-                        JPAExpressions
-                                .select(follow.following)
-                                .from(follow)
-                ), user.userId.eq(userId))
+                .where(follow.following.userId.eq(userId))
                 .fetch();
 
-        String userPhotoUrl = queryFactory.select(user.picture).from(user).where(user.userId.eq(userId)).fetchOne();
-        String userNickName = queryFactory.select(user.nickName).from(user).where(user.userId.eq(userId)).fetchOne();
-        return new MyPageResponse(userPhotoUrl, userNickName, followings, followers);
+        return new MyPageResponse(myPageSimpleResponse, followings.size(), followers.size(), followings, followers);
 
     }
 }
