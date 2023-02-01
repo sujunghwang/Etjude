@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface LikesRepository extends JpaRepository<Likes, Long> {
 
-    @Query(value = "select l from Likes l where l.division = :division and l.videoId = :story_id and l.user.userId = :user_id")
+    @Query(value = "select l from Likes l where l.division = :division and l.articleStoryId = :story_id and l.user.userId = :user_id")
     Optional<Likes> findLikeConnection(@Param("story_id") int storyId, @Param("division") int division, @Param("user_id") String userId);
 }

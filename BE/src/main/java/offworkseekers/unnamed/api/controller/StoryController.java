@@ -74,7 +74,7 @@ public class StoryController {
         int division = (int) param.get("division");
         String userId = (String) param.get("user_id");
 
-        if (storyService.getStoryLikeStatus(storyId, division, userId) == null) {
+        if (storyService.getStoryLikeStatus(storyId, division, userId).isEmpty()) {
             return false;
         }
         return true;
