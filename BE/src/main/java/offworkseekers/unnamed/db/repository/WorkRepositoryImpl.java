@@ -2,17 +2,12 @@ package offworkseekers.unnamed.db.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import offworkseekers.unnamed.api.response.GetWorkResponse;
 import offworkseekers.unnamed.api.response.StoriesOfWork;
 import offworkseekers.unnamed.api.response.WorkOrderByRandomResponse;
 import offworkseekers.unnamed.api.response.WorkSearchResponse;
-import offworkseekers.unnamed.db.entity.QCategory;
-import offworkseekers.unnamed.db.entity.QWork;
-import offworkseekers.unnamed.db.entity.Work;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -79,7 +74,7 @@ public class WorkRepositoryImpl implements WorkRepositorySupport {
                         JPAExpressions.select(likes.count())
                                 .from(likes)
                                 .where(likes.division.eq(1),
-                                        likes.videoId.eq(story.storyId.castToNum(Integer.class)))))
+                                        likes.articleStoryId.eq(story.storyId.castToNum(Integer.class)))))
                 .from(story)
                 .where(story.work.workId.eq(workId))
                 .fetch();

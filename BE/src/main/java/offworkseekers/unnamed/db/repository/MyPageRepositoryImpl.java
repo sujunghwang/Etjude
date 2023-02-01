@@ -107,7 +107,7 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                         article.articleViewCount,
                         article.articleCreatedDate))
                 .from(article, likes)
-                .where(likes.division.eq(0), likes.user.userId.eq(userId), likes.videoId.eq(article.articleId.castToNum(Integer.class)))
+                .where(likes.division.eq(0), likes.user.userId.eq(userId), likes.articleStoryId.eq(article.articleId.castToNum(Integer.class)))
                 .fetch();
 
         List<MyPageLikesStoriesDto> stories = queryFactory
@@ -119,9 +119,9 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                         JPAExpressions.select(likes.count())
                                 .from(likes)
                                 .where(likes.division.eq(1),
-                                        likes.videoId.eq(story.storyId.castToNum(Integer.class)))))
+                                        likes.articleStoryId.eq(story.storyId.castToNum(Integer.class)))))
                 .from(story, likes)
-                .where(likes.division.eq(1), likes.user.userId.eq(userId), likes.videoId.eq(story.storyId.castToNum(Integer.class)))
+                .where(likes.division.eq(1), likes.user.userId.eq(userId), likes.articleStoryId.eq(story.storyId.castToNum(Integer.class)))
                 .fetch();
 
         return new MyPageLikesResponse(articles, stories);
@@ -172,12 +172,5 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
         String userNickName = queryFactory.select(user.nickName).from(user).where(user.userId.eq(userId)).fetchOne();
         return new MyPageResponse(userPhotoUrl, userNickName, followings, followers);
 
-
-        /*
-        String userPhotoUrl;
-        String userNickName;
-        List<MyPageFollow> followings;
-        List<MyPageFollow> followers;
-        */
     }
 }
