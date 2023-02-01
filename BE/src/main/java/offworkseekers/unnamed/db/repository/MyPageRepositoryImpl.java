@@ -165,7 +165,7 @@ public class MyPageRepositoryImpl implements MyPageRepositorySupport{
                 .select(Projections.constructor(MyPageFollowDto.class,
                         follow.follower.userId,
                         follow.follower.picture))
-                .from(user, follow)
+                .from(follow)
                 .where(follow.following.userId.eq(userId))
                 .fetch();
 
