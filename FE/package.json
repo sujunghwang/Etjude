@@ -12,6 +12,7 @@
     "bootstrap-vue-3": "^0.5.1",
     "core-js": "^3.8.3",
     "css-loader": "^6.7.3",
+    "hangul-js": "^0.2.6",
     "install": "^0.13.0",
     "npm": "^9.4.0",
     "style-loader": "^3.3.1",

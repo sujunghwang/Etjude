@@ -12,6 +12,7 @@
       </div>
     </div>
   </div>
+  {{ disWord }}
   <router-view />
 </template>
 <script>
@@ -22,7 +23,10 @@ export default {
   name: "SearchView",
   components: {},
   setup() {
+    const Hangul = require("hangul-js");
+
     const searchWord = ref("");
+    const disWord = Hangul.disassemble("가나다");
     const router = useRouter();
     watch(
       () => searchWord.value,
@@ -36,6 +40,8 @@ export default {
       }
     );
     return {
+      Hangul,
+      disWord,
       searchWord,
     };
   },
