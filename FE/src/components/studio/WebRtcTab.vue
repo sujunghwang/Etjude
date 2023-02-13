@@ -217,7 +217,7 @@ export default {
           },
         }
       );
-      console.log(response);
+      console.log(response.data);
       return response.data; // The sessionId
     },
 
@@ -228,7 +228,7 @@ export default {
         {
           headers: {
             "Content-Type": "application/json",
-            // Authorization: Basic EncodeBase64(OPENVIDUAPP:"MY_SECRET"),
+            Authorization: "Basic T1BFTlZJRFVBUFA6TVlfU0VDUkVU",
           },
         }
       );
