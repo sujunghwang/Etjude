@@ -85,7 +85,7 @@ def search_user_scene(studio_id, object_list):
     target = str(studio_id) + "/"
     user_scense = []
     user_scense = [x[len(studio_id):] for x in object_list if target in x]
-    if(len(user_scense)):
+    if(len(user_scense) == 1):
         story_id = user_scense[0][1]
     else:
         story_id = user_scense[1][1]
