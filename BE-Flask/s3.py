@@ -85,7 +85,10 @@ def search_user_scene(studio_id, object_list):
     target = str(studio_id) + "/"
     user_scense = []
     user_scense = [x[len(studio_id):] for x in object_list if target in x]
-    story_id = user_scense[1][1]
+    if(len(user_scense)):
+        story_id = user_scense[0][1]
+    else:
+        story_id = user_scense[1][1]
     return user_scense[:], story_id
 
 def search_origin_scene(story_id, object_list):
